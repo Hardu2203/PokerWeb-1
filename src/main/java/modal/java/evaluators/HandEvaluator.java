@@ -1,9 +1,6 @@
 package modal.java.evaluators;
 
-import modal.java.cards.Card;
-import modal.java.cards.Hand;
-import modal.java.cards.Rank;
-import modal.java.cards.Suit;
+import modal.java.cards.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,24 +8,24 @@ import java.util.stream.Stream;
 
 public class HandEvaluator {
 
-    public static String evaluateHandType(Hand hand) {
+    public static HandType evaluateHandType(Hand hand) {
         if(isStraightFlush(hand))
-            return "Strait Flush";
+            return HandType.STRAIT_FLUSH;
         if(isFourOfAKind(hand))
-            return "Four of a kind";
+            return HandType.FOUR_OF_A_KIND;
         if(isFullHouse(hand))
-            return "Full house";
+            return HandType.FULL_HOUSE;
         if(isFlushFunctional(hand))
-            return "Flush";
+            return HandType.FLUSH;;
         if(isStraight(hand))
-            return "Strait";
+            return HandType.STRAIT;
         if(isThreeOfAKind(hand))
-            return "Three of a kind";
+            return HandType.THREE_OF_A_KIND;
         if(isTwoPair(hand))
-            return "Two pair";
+            return HandType.TWO_PAIR;
         if (isOnePair(hand))
-            return "One pair";
-        return "High Card:" + highCard(hand).toString();
+            return HandType.ONE_PAIR;
+        return HandType.HIGH_CARD;
     }
 
     public static Card highCard(Hand hand)

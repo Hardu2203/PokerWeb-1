@@ -18,7 +18,7 @@ public class PokerService {
 
     public String evaluateHand(Hand h)
     {
-        return HandEvaluator.evaluateHandType(h);
+        return HandEvaluator.evaluateHandType(h).toString();
     }
 
 }
