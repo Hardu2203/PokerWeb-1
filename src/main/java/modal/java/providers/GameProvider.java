@@ -4,6 +4,7 @@ import com.google.inject.Singleton;
 import ninja.jpa.UnitOfWork;
 
 import javax.persistence.Query;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -12,9 +13,9 @@ import java.util.Optional;
 @Singleton
 public class GameProvider<Game> extends DatabaseProvider {
     @UnitOfWork
-    public Optional<Game> findAllGames()
+    public List<Game> findAllGames()
     {
-        Query query = getEntityManager().createQuery("SELECT * FROM Game");
-        return getSingleResult(query);
+        Query query = getEntityManager().createQuery("SELECT g FROM Game g");
+        return query.getResultList();
     }
 }

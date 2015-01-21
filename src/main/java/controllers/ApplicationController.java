@@ -67,6 +67,19 @@ public class ApplicationController {
     }
 
     @FilterWith(SecureFilter.class)
+    public Result history(Context context) {
+        Result result = Results.html();
+
+        List<Game> games = gameProvider.findAllGames();
+        result.render("games", games);
+        List<GameUser> gameUsers = gameUserProvider.findAllGameUsers();
+        result.render("gameusers",gameUsers);
+        return result;
+        //return Results.html();
+    }
+
+
+    @FilterWith(SecureFilter.class)
     public Result game(Context context) {
         Result result = Results.html();
         result.render("username", context.getSession().get("username"));

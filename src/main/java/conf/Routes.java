@@ -34,7 +34,7 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/registerNewUser").with(ApplicationController.class, "registerNewUser");
         router.POST().route("/login").with(ApplicationController.class, "login");
         router.GET().route("/logout").with(ApplicationController.class, "logout");
-
+        router.GET().route("/history").with(ApplicationController.class, "history");
         router.GET().route("/username").with(ApplicationController.class, "username");
         ///////////////////////////////////////////////////////////////////////
         // Assets (pictures / javascript)
