@@ -37,6 +37,7 @@ import com.google.inject.Singleton;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -59,7 +60,9 @@ public class ApplicationController {
     public Result newGame(Context context)
     {
         Result result = Results.html();
+        List<User> users = userProvider.findAllUsers();
         result.render("username", context.getSession().get("username"));
+        result.render("users", users);
         return result;
     }
 
@@ -70,23 +73,25 @@ public class ApplicationController {
         Hand hand;
         String folder = "assets/images/cards/";
         Deck deck = new Deck();
-        ///////////////
         String gameName = "Random Name for now";
         Game game = new Game();
         game.setGame_name(gameName);
         gameProvider.persist(game);
         Optional<User> userOptional = userProvider.findUserByName(context.getSession().get("username"));
         User user = userOptional.get();
-        //////////////
         for(int i = 1; i < 6; i++) {
+            if(i != 1)
+            {
+                userOptional = userProvider.findUserByName(context.getParameter("u"+i));
+                user = userOptional.get();
+            }
+
             hand = pokerInstance.dealHand(deck);
-            ///////////////////////
             GameUser gameUser = new GameUser();
             gameUser.setGame(game);
             gameUser.setUser(user);
             gameUser.setHand(hand.toString());
             gameUserProvider.persist(gameUser);
-            //////////////////////
             result.render("c1u"+i, folder + hand.getCards().get(0).toString() + ".png");
             result.render("c2u"+i, folder + hand.getCards().get(1).toString() + ".png");
             result.render("c3u"+i, folder + hand.getCards().get(2).toString() + ".png");
