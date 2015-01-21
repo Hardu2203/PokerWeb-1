@@ -9,6 +9,7 @@ CREATE TABLE user (
 CREATE TABLE game(
     id int NOT NULL AUTO_INCREMENT,
     game_name VARCHAR(100) NOT NULL,
+    date_time TIMESTAMP,
     PRIMARY KEY(id)
 );
 

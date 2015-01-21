@@ -37,6 +37,7 @@ import com.google.inject.Singleton;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,6 +90,7 @@ public class ApplicationController {
         String gameName = "Random Name for now";
         Game game = new Game();
         game.setGame_name(gameName);
+        game.setDate_time(new Date());
         gameProvider.persist(game);
         Optional<User> userOptional = userProvider.findUserByName(context.getSession().get("username"));
         User user = userOptional.get();

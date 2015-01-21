@@ -19,6 +19,18 @@ public class Game {
     @Id
     private Long id;
 
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date_time;
+
+    public void setDate_time(Date date_time) {
+        this.date_time = date_time;
+    }
+
+    public Date getDate_time() {
+        return date_time;
+    }
+
     public Long getId() {
         return id;
     }
