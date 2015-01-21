@@ -28,6 +28,11 @@ public class HandEvaluator {
         return HandType.HIGH_CARD;
     }
 
+    public static Hand findWinner(List<Hand> hands)
+    {
+        //TODO
+        return null;
+    }
     public static Card highCard(Hand hand)
     {
         Card currentCard = hand.getCards().get(0);

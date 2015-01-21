@@ -113,7 +113,7 @@ public class ApplicationController {
             result.render("c4u"+i, folder + hand.getCards().get(3).toString() + ".png");
             result.render("c5u"+i, folder + hand.getCards().get(4).toString() + ".png");
 
-            result.render("type"+i, pokerInstance.evaluateHand(hand));
+            result.render("type"+i, hand.getHandType().toString());
 
         }
         return result;

@@ -1,5 +1,8 @@
 package modal.java.cards;
 
+import com.google.inject.Inject;
+import modal.java.evaluators.HandEvaluator;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +11,7 @@ import java.util.StringJoiner;
 public final class Hand {
 
     private final List<Card> cards = new ArrayList<>(5);
-
+    private HandType handType;
     public Hand(String ... cardRepresentations) {
         if (cardRepresentations.length != 5) {
             throw new IllegalArgumentException("Exactly 5 cards are required.");
@@ -17,6 +20,11 @@ public final class Hand {
         for (String cardRepresentation : cardRepresentations) {
             cards.add(new Card(cardRepresentation));
         }
+        this.handType = HandEvaluator.evaluateHandType(this);
+    }
+
+    public HandType getHandType() {
+        return handType;
     }
 
     public List<Card> getCards() {
@@ -33,6 +41,7 @@ public final class Hand {
         cards.removeFirst();
         cards.removeFirst();
         cards.removeFirst();
+        hand.handType = HandEvaluator.evaluateHandType(hand);
         return hand;
     }
     @Override
