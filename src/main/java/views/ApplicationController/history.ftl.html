@@ -1,10 +1,12 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
 <@layout.myLayout "Home page">
     <#list games as game>
-        <p>${game.game_name}</p>
+        <p>Game Name:${game.game_name}<br> Game Date: <br>Game Winner:</p>
+        <ul class="list-group">
             <#list gameusers as gameuser>
                 <!--<p>${gameuser.user.name} </p>-->
-                <#if gameuser.game.id == game.id> <p>${gameuser.user.name} </p></#if>
+                <#if gameuser.game.id == game.id> <li class="list-group-item">Player: ${gameuser.user.name} Hand: ${gameuser.hand} </li></#if>
             </#list>
+            </ul>
     </#list>
 </@layout.myLayout>
