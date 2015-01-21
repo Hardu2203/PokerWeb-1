@@ -28,10 +28,17 @@ public class HandEvaluator {
         return HandType.HIGH_CARD;
     }
 
+    //TODO add more logic here!
     public static Hand findWinner(List<Hand> hands)
     {
-        //TODO
-        return null;
+        Collections.sort(hands, new Comparator<Hand>() {
+            @Override
+            public int compare(Hand o1, Hand o2) {
+                return Integer.compare(o1.getHandType().ordinal(),o2.getHandType().ordinal());
+            }
+        });
+
+        return hands.get(0);
     }
     public static Card highCard(Hand hand)
     {

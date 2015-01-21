@@ -22,6 +22,7 @@ import filters.SecureFilter;
 import modal.java.Security.SecureHash;
 import modal.java.cards.Deck;
 import modal.java.cards.Hand;
+import modal.java.evaluators.HandEvaluator;
 import modal.java.game.Game;
 import modal.java.game.GameUser;
 import modal.java.providers.GameProvider;
@@ -38,6 +39,7 @@ import com.google.inject.Singleton;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +96,8 @@ public class ApplicationController {
         gameProvider.persist(game);
         Optional<User> userOptional = userProvider.findUserByName(context.getSession().get("username"));
         User user = userOptional.get();
+        List<Hand> handList = new LinkedList<Hand>();
+
         for(int i = 1; i < 6; i++) {
             if(i != 1)
             {
@@ -102,6 +106,7 @@ public class ApplicationController {
             }
 
             hand = pokerInstance.dealHand(deck);
+            handList.add(hand);
             GameUser gameUser = new GameUser();
             gameUser.setGame(game);
             gameUser.setUser(user);
@@ -116,6 +121,7 @@ public class ApplicationController {
             result.render("type"+i, hand.getHandType().toString());
 
         }
+        result.render("winner", HandEvaluator.findWinner(handList).toString());
         return result;
         //return Results.html();
     }
