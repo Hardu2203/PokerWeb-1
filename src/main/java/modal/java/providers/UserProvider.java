@@ -23,4 +23,10 @@ public class UserProvider<User> extends DatabaseProvider {
         Query query = getEntityManager().createQuery("SELECT u FROM User u ");
         return query.getResultList();
     }
+    @UnitOfWork
+    public List<User> findAllUsersExceptFor(String name)
+    {
+        Query query = getEntityManager().createQuery("SELECT u FROM User u WHERE u.name <> :name ").setParameter("name",name);
+        return query.getResultList();
+    }
 }

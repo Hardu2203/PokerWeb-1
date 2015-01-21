@@ -61,7 +61,7 @@ public class ApplicationController {
     public Result newGame(Context context)
     {
         Result result = Results.html();
-        List<User> users = userProvider.findAllUsers();
+        List<User> users = userProvider.findAllUsersExceptFor(context.getSession().get("username"));
         result.render("username", context.getSession().get("username"));
         result.render("users", users);
         return result;
@@ -153,7 +153,6 @@ public class ApplicationController {
     }
 
     public Result registerNewUser(Context context) {
-        //context.getSession().put("username","username");
         String hashedPassword = null;
         try {
             hashedPassword = SecureHash.createHash(context.getParameter("password"));
