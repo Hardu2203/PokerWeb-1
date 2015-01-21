@@ -1,0 +1,121 @@
+<#import "../layout/defaultLayout.ftl.html" as layout> 
+<@layout.myLayout "Home page">    
+    <h1>Register Page</h1>
+    <br>
+    <form action="/registerNewUser" class="input_full" method="post">
+        <div class="form-group">
+        User Name:<br>
+        <input class="form-control" type="text" id="username" name="username">
+        <br>
+        Password:<br>
+        <input class="form-control"  class="input_full" type="password" id="password" name="password">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="70"
+                     aria-valuemin="0" aria-valuemax="100" id="progress" style="width:0">
+                    <span class="sr-only"></span>
+                </div>
+            </div>
+        <br>
+        <input class="form-control" id="submit" type="submit" disabled="disabled" value="Send" />
+        <input class="form-control" type="reset" value="Reset">
+    </div>
+    </form>
+
+</@layout.myLayout>
+
+
+<script>
+
+
+/* returns the size/length of an object */
+Object.size = function(obj) {
+	var size = 0;
+	for(key in obj) {
+		if(obj.hasOwnProperty(key)) size++;
+	}
+	return size;
+}
+
+function countUnique(str)
+{
+    var letters = new Object;
+
+    //loop, figure it out
+    for(x = 0, length = str.length; x < length; x++) {
+        var l = str.charAt(x)
+        letters[l] = (isNaN(letters[l]) ? 1 : letters[l] + 1);
+    }
+
+     return Object.size(letters);
+}
+
+
+function hasLowerCase(str) {
+    return (/[a-z]/.test(str));
+}
+function hasUpperCase(str) {
+    return (/[A-Z]/.test(str));
+}
+function hasNumber(str) {
+    return (/[0-9]/.test(str));
+}
+function hasSpecial(str)
+{
+   return !(/^[a-zA-Z0-9- ]*$/.test(str));
+}
+        $( document ).ready(function()
+        {
+            $("#password").keyup(function()
+            {
+                var pass = $("#password").val();
+                var total = 0;
+                total = Math.min(5 * countUnique(pass) - 3, 40);
+                if(hasLowerCase(pass)){ total += 15; }
+                if(hasUpperCase(pass)){ total += 15; }
+                if(hasNumber(pass)){  total += 15; }
+                if(hasSpecial(pass)) { total += 15; }
+                if(pass.length < 4) total = 0;
+                $("#progress").css("width",total + "%");
+                if(total < 30)
+                {
+                    $("#submit").attr('disabled','disabled');
+                }
+                else if($("#username").val().length > 2)
+                {
+                    $("#submit").removeAttr('disabled');
+                }
+
+            });
+            $("#username").keyup(function()
+            {
+                var thisusername = $("#username").val();
+                if(thisusername.length < 3)
+                {
+                    $("#submit").attr('disabled','disabled');
+                }
+                else
+                {
+                    $.ajax(
+                    {
+                        url: "/username",
+                        data:{username:thisusername}
+
+                    }).done(function(data)
+                    {
+                        var obj = $.parseJSON( data );
+                        if(obj.result == "true")
+                        {
+                            $("#username").css("background-color","pink");
+                            $("#submit").attr('disabled','disabled');
+                        }
+                        else
+                        {
+                             $("#username").css("background-color","white");
+                             $("#submit").removeAttr('disabled');
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>

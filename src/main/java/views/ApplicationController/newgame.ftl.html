@@ -1,0 +1,25 @@
+<#import "../layout/defaultLayout.ftl.html" as layout> 
+<@layout.myLayout "Home page">    
+    <h1>New Game</h1>
+    <h2>Welcome ${username}. Please select 5 other players to play with.</h2>
+    <br>
+    <form class="input_full" action="/login" method="post">
+        <div class="container">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Tutorials
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">CSS</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">About Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <br>
+        <input class="form-control" type="reset" value="Reset">
+
+    </form>
+    <a href="register">Register a new Account</a>
+</@layout.myLayout>

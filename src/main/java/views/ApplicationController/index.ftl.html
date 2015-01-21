@@ -1,0 +1,16 @@
+<#import "../layout/defaultLayout.ftl.html" as layout> 
+<@layout.myLayout "Home page">    
+    <h1>Login</h1>
+    <br>
+    <form class="input_full" action="/login" method="post">
+        User Name:<br>
+        <input class="form-control" type="text" id="username" name="username">
+        <br>
+        Password:<br>
+        <input class="form-control" type="password" name="password">
+        <br>
+        <input class="form-control" type="submit" value="Send" />
+        <input class="form-control" type="reset" value="Reset">
+    </form>
+    <a href="register">Register a new Account</a>
+</@layout.myLayout>
