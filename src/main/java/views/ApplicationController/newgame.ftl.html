@@ -4,6 +4,9 @@
     <h2>Welcome ${username}. Please select 5 other players to play with.</h2>
     <br>
     <form class="input_full" action="/game" method="post">
+        Name of Game:<br>
+        <input class="form-control" type="text" id="gamename" name="gamename">
+        <br>
         <h3>Player 2:</h3>
         <select id="u1"  name="u1" class="form-control">
             <#list users as user>

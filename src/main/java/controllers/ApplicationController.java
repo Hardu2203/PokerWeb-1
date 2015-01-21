@@ -87,7 +87,7 @@ public class ApplicationController {
         Hand hand;
         String folder = "assets/images/cards/";
         Deck deck = new Deck();
-        String gameName = "Random Name for now";
+        String gameName = context.getParameter("gamename");
         Game game = new Game();
         game.setGame_name(gameName);
         game.setDate_time(new Date());
