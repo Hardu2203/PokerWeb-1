@@ -34,7 +34,9 @@ public class HandEvaluator {
         int i = 0;
         for(Hand hand: hands)
         {
-            if(hand == winningHand) return i;
+            if(hand == winningHand)
+                return i;
+            i++;
         }
         return -1;
     }
@@ -42,15 +44,18 @@ public class HandEvaluator {
     //TODO add more logic here!
     public static Hand findWinningHand(List<Hand> hands)
     {
-
-        Collections.sort(hands, new Comparator<Hand>() {
+        List<Hand> tempList = new LinkedList<Hand>();
+        for(Hand hand: hands)
+        {
+            tempList.add(hand);
+        }
+        Collections.sort(tempList, new Comparator<Hand>() {
             @Override
             public int compare(Hand o1, Hand o2) {
                 return Integer.compare(o1.getHandType().ordinal(),o2.getHandType().ordinal());
             }
         });
-
-        return hands.get(0);
+        return tempList.get(0);
     }
     public static Card highCard(Hand hand)
     {
