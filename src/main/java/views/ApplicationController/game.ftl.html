@@ -25,43 +25,16 @@ body
         <h1>Poker Web App</h1>
         <h1>Current user: ${username}</h1>
         <h1>Winner: ${winner}</h1>
-        <img id="c1u1" src=${c1u1} width="100px">
-        <img id="c2u1" src=${c2u1} width="100px" >
-        <img id="c3u1" src=${c3u1} width="100px">
-        <img id="c4u1" src=${c4u1} width="100px">
-        <img id="c5u1" src=${c5u1} width="100px">
-        <h2 id="type1">Type: ${type1}</h2>
 
-
-        <img id="c1u2" src=${c1u2} width="100px">
-        <img id="c2u2" src=${c2u2} width="100px" >
-        <img id="c3u2" src=${c3u2} width="100px">
-        <img id="c4u2" src=${c4u2} width="100px">
-        <img id="c5u2" src=${c5u2} width="100px">
-        <h2 id="type2">Type: ${type2}</h2>
-
-        <img id="c1u3" src=${c1u3} width="100px">
-        <img id="c2u3" src=${c2u3} width="100px" >
-        <img id="c3u3" src=${c3u3} width="100px">
-        <img id="c4u3" src=${c4u3} width="100px">
-        <img id="c5u3" src=${c5u3} width="100px">
-        <h2 id="type3">Type: ${type3}</h2>
-
-
-        <img id="c1u4" src=${c1u4} width="100px">
-        <img id="c2u4" src=${c2u4} width="100px" >
-        <img id="c3u4" src=${c3u4} width="100px">
-        <img id="c4u4" src=${c4u4} width="100px">
-        <img id="c5u4" src=${c5u4} width="100px">
-        <h2 id="type4">Type: ${type4}</h2>
-
-
-        <img id="c1u5" src=${c1u5} width="100px">
-        <img id="c2u5" src=${c2u5} width="100px" >
-        <img id="c3u5" src=${c3u5} width="100px">
-        <img id="c4u5" src=${c4u5} width="100px">
-        <img id="c5u5" src=${c5u5} width="100px">
-        <h2 id="type5">Type: ${type5}</h2>
+        <#list handlist as hand>
+            <#assign x = 1>
+                <#list hand.cards as card>
+                    <img class="c${x}"  src="${folder}${card}.png" width="100px">
+                    <#assign x = x + 1></#>
+                </#list>
+                <h2 class="tpye" >Type: ${hand.handType}</h2>
+            </#>
+        </#list>
 
         <a href="logout">Logout</a>
 </div>
@@ -70,66 +43,16 @@ body
 <script>
         $( document ).ready(function()
         {
-            $("#c1u1").animate({ opacity: 1 },1000).promise().done(function(){
-                $("#c2u1").animate({ opacity: 1 },1000).promise().done(function(){
-                    $("#c3u1").animate({ opacity: 1 },1000).promise().done(function(){
-                        $("#c4u1").animate({ opacity: 1 },1000).promise().done(function(){
-                            $("#c5u1").animate({ opacity: 1 },1000).promise().done(function(){
+            $(".c1").animate({ opacity: 1 },1000).promise().done(function(){
+                $(".c2").animate({ opacity: 1 },1000).promise().done(function(){
+                    $(".c3").animate({ opacity: 1 },1000).promise().done(function(){
+                        $(".c4").animate({ opacity: 1 },1000).promise().done(function(){
+                            $(".c5").animate({ opacity: 1 },1000).promise().done(function(){
                                 $("h2").css("visibility","visible");
                             });
                         });
                     });
                 });
              });
-
-                 $("#c1u2").animate({ opacity: 1 },1000).promise().done(function(){
-                $("#c2u2").animate({ opacity: 1 },1000).promise().done(function(){
-                    $("#c3u2").animate({ opacity: 1 },1000).promise().done(function(){
-                        $("#c4u2").animate({ opacity: 1 },1000).promise().done(function(){
-                            $("#c5u2").animate({ opacity: 1 },1000).promise().done(function(){
-                                $("h2").css("visibility","visible");
-                            });
-                        });
-                    });
-                });
-             });
-
-                 $("#c1u3").animate({ opacity: 1 },1000).promise().done(function(){
-                $("#c2u3").animate({ opacity: 1 },1000).promise().done(function(){
-                    $("#c3u3").animate({ opacity: 1 },1000).promise().done(function(){
-                        $("#c4u3").animate({ opacity: 1 },1000).promise().done(function(){
-                            $("#c5u3").animate({ opacity: 1 },1000).promise().done(function(){
-                                $("h2").css("visibility","visible");
-                            });
-                        });
-                    });
-                });
-             });
-
-                 $("#c1u4").animate({ opacity: 1 },1000).promise().done(function(){
-                $("#c2u4").animate({ opacity: 1 },1000).promise().done(function(){
-                    $("#c3u4").animate({ opacity: 1 },1000).promise().done(function(){
-                        $("#c4u4").animate({ opacity: 1 },1000).promise().done(function(){
-                            $("#c5u4").animate({ opacity: 1 },1000).promise().done(function(){
-                                $("h2").css("visibility","visible");
-                            });
-                        });
-                    });
-                });
-             });
-
-                 $("#c1u5").animate({ opacity: 1 },1000).promise().done(function(){
-                $("#c2u5").animate({ opacity: 1 },1000).promise().done(function(){
-                    $("#c3u5").animate({ opacity: 1 },1000).promise().done(function(){
-                        $("#c4u5").animate({ opacity: 1 },1000).promise().done(function(){
-                            $("#c5u5").animate({ opacity: 1 },1000).promise().done(function(){
-                                $("h2").css("visibility","visible");
-                            });
-                        });
-                    });
-                });
-             });
-
-
         });
 </script>

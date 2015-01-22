@@ -120,6 +120,7 @@ public class ApplicationController {
             userList.add(user);
             gameUser.setUser(user);
             gameUser.setHand(hand.toString());
+            gameUserList.add(gameUser);
         }
         int winningPosition = HandEvaluator.findWinnerPosition(handList);
         User winner = userList.get(winningPosition);
@@ -132,6 +133,9 @@ public class ApplicationController {
             gameUserProvider.persist(gu);
         }
         //render everything
+        result.render("userlist",userList);
+        result.render("handlist",handList);
+
         return result;
 
     }
