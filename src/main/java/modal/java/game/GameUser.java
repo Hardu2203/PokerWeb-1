@@ -22,6 +22,19 @@ public class GameUser implements Serializable{
     @Column
     private String hand;
 
+    @Column
+    private String type;
+
+    @Column
+    private boolean winner = false;
+
+    public void setWinner(boolean winner) { this.winner = winner;   }
+
+    public boolean getWinner() { return winner; }
+    public void setType(String type) { this.type = type;  }
+
+    public String getType() { return type;  }
+
     public void setGame(Game game) { this.game = game;  }
 
     public void setHand(String hand) {

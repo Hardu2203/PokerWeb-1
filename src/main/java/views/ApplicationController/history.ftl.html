@@ -1,12 +1,74 @@
-<#import "../layout/defaultLayout.ftl.html" as layout> 
+<#import "../layout/defaultLayout.ftl.html" as layout>
+    <style>
+        #headerinfo
+        {
+        font-size:24px;
+        width:100%;
+        }
+        table {
+        table-layout: fixed;
+        width:10%;
+        }
+        #overall
+        {
+            background-color: rgba(50,50,50,0.5);
+            background-color: rgba(50,50,50,0.5);
+            border: 2px solid;
+            border-radius: 25px;
+        }
+    </style>
 <@layout.myLayout "Home page">
     <#list games as game>
-        <p>Game Name:${game.game_name}<br> Game Date:${game.date_time} <br> Game Winner:${game.winner_name.name}</p>
-        <ul class="list-group">
+        <div class="div" id="overall">
+        <table id="headerinfo" >
+            <tbody>
+            <tr>
+                <td><strong>&nbsp;&nbsp;&nbsp;Name:</strong>${game.game_name}</td>
+                <td><strong>Date:</strong>${game.date_time}</td>
+                <td><strong>Game Winner:</strong>${game.winner_name.name}</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Player</th>
+                <th>Cards</th>
+                <th>Type</th>
+                <th>Winner</th>
+            </tr>
+            </thead>
+            <tbody>
             <#list gameusers as gameuser>
-                <!--<p>${gameuser.user.name} </p>-->
-                <#if gameuser.game.id == game.id> <li class="list-group-item">Player: ${gameuser.user.name} Hand: ${gameuser.hand} </li></#if>
+                <#if gameuser.game.id == game.id>
+                    <tr>
+                    <td>
+                        ${gameuser.user.name}
+                    </td>
+                    <td>
+                        <#list gameuser.hand?split(",") as card>
+                            <img  src="assets/images/cards/${card}.png" width="50px">
+                        </#list>
+                    </td>
+                    <td>
+                        ${gameuser.type}
+                    </td>
+                    <td>
+                        <#if gameuser.winner>
+                            <img  src="assets/images/pokercoins.png" width="50px">
+                            <#else>
+                                <img  src="assets/images/sad_face.png" width="50px">
+                        </#if>
+                    </td>
+                    </tr>
+                </#if>
             </#list>
-            </ul>
+            </tbody>
+            </table>
+            </div>
+        <br>
     </#list>
 </@layout.myLayout>

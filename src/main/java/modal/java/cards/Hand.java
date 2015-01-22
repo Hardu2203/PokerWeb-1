@@ -46,7 +46,7 @@ public final class Hand {
     }
     @Override
     public String toString() {
-        StringJoiner stringJoiner = new StringJoiner(",", "(", ")");
+        StringJoiner stringJoiner = new StringJoiner(",", "", "");
         for (Card card : cards) {
             stringJoiner.add(card.toString());
         }

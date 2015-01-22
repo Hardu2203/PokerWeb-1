@@ -107,6 +107,7 @@ public class ApplicationController {
         gameUser.setGame(game);
         gameUser.setUser(currentUser);
         gameUser.setHand(currentUserHand.toString());
+        gameUser.setType(currentUserHand.getHandType().toString());
         gameUserList.add(gameUser);
         //all other users
         for(int i = 1; i < 6; i++)
@@ -120,12 +121,14 @@ public class ApplicationController {
             userList.add(user);
             gameUser.setUser(user);
             gameUser.setHand(hand.toString());
+            gameUser.setType(hand.getHandType().toString());
             gameUserList.add(gameUser);
         }
         int winningPosition = HandEvaluator.findWinnerPosition(handList);
         User winner = userList.get(winningPosition);
         game.setWinner(winner);
         result.render("winner", winner.getName());
+        gameUserList.get(winningPosition).setWinner(true);
         //Persist everything!
         gameProvider.persist(game);
         for(GameUser gu: gameUserList)
@@ -135,7 +138,7 @@ public class ApplicationController {
         //render everything
         result.render("userlist",userList);
         result.render("handlist",handList);
-
+        result.render("winninghand",handList.get(winningPosition));
         return result;
 
     }
