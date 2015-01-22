@@ -35,9 +35,7 @@ public class Game {
         this.winner_name = winner;
     }
 
-    public User getWinner() {
-        return winner_name;
-    }
+    public User getWinner_name() { return winner_name;  }
 
     public Date getDate_time() {
         return date_time;

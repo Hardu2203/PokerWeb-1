@@ -1,7 +1,7 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
 <@layout.myLayout "Home page">
     <#list games as game>
-        <p>Game Name:${game.game_name}<br> Game Date:${game.date_time} <br>Game Winner: </p>
+        <p>Game Name:${game.game_name}<br> Game Date:${game.date_time} <br> Game Winner:${game.winner_name.name}</p>
         <ul class="list-group">
             <#list gameusers as gameuser>
                 <!--<p>${gameuser.user.name} </p>-->

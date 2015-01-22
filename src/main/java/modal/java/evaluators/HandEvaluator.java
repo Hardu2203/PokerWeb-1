@@ -42,6 +42,7 @@ public class HandEvaluator {
     //TODO add more logic here!
     public static Hand findWinningHand(List<Hand> hands)
     {
+
         Collections.sort(hands, new Comparator<Hand>() {
             @Override
             public int compare(Hand o1, Hand o2) {
