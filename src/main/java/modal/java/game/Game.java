@@ -19,12 +19,24 @@ public class Game {
     @Id
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "winner_name")
+    private User winner_name;
+
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date date_time;
 
     public void setDate_time(Date date_time) {
         this.date_time = date_time;
+    }
+
+    public void setWinner(User winner) {
+        this.winner_name = winner;
+    }
+
+    public User getWinner() {
+        return winner_name;
     }
 
     public Date getDate_time() {

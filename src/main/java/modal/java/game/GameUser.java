@@ -22,9 +22,7 @@ public class GameUser implements Serializable{
     @Column
     private String hand;
 
-    public void setGame(Game game) {
-        this.game = game;
-    }
+    public void setGame(Game game) { this.game = game;  }
 
     public void setHand(String hand) {
         this.hand = hand;
@@ -34,10 +32,7 @@ public class GameUser implements Serializable{
         this.user = user;
     }
 
-    public Game getGame() {
-
-        return game;
-    }
+    public Game getGame() { return game; }
 
     public String getHand() {
         return hand;

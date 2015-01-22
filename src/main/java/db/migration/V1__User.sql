@@ -10,6 +10,8 @@ CREATE TABLE game(
     id int NOT NULL AUTO_INCREMENT,
     game_name VARCHAR(100) NOT NULL,
     date_time TIMESTAMP,
+    winner_name VARCHAR(12),
+    CONSTRAINT winner_name_fk FOREIGN KEY(winner_name) REFERENCES user(name),
     PRIMARY KEY(id)
 );
 

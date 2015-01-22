@@ -28,8 +28,19 @@ public class HandEvaluator {
         return HandType.HIGH_CARD;
     }
 
+    public static int findWinnerPosition(List<Hand> hands)
+    {
+        Hand winningHand = findWinningHand(hands);
+        int i = 0;
+        for(Hand hand: hands)
+        {
+            if(hand == winningHand) return i;
+        }
+        return -1;
+    }
+
     //TODO add more logic here!
-    public static Hand findWinner(List<Hand> hands)
+    public static Hand findWinningHand(List<Hand> hands)
     {
         Collections.sort(hands, new Comparator<Hand>() {
             @Override

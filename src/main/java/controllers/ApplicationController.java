@@ -35,6 +35,7 @@ import ninja.Result;
 import ninja.Results;
 
 import com.google.inject.Singleton;
+import org.eclipse.jetty.server.handler.HandlerList;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -86,44 +87,53 @@ public class ApplicationController {
     public Result game(Context context) {
         Result result = Results.html();
         result.render("username", context.getSession().get("username"));
-        Hand hand;
         String folder = "assets/images/cards/";
-        Deck deck = new Deck();
+        result.render("folder",folder);
         String gameName = context.getParameter("gamename");
+        Deck deck = new Deck();
         Game game = new Game();
         game.setGame_name(gameName);
         game.setDate_time(new Date());
-        gameProvider.persist(game);
-        Optional<User> userOptional = userProvider.findUserByName(context.getSession().get("username"));
-        User user = userOptional.get();
         List<Hand> handList = new LinkedList<Hand>();
-
-        for(int i = 1; i < 6; i++) {
-            if(i != 1)
-            {
-                userOptional = userProvider.findUserByName(context.getParameter("u"+i));
-                user = userOptional.get();
-            }
-
-            hand = pokerInstance.dealHand(deck);
+        List<GameUser> gameUserList = new LinkedList<GameUser>();
+        List<User> userList = new LinkedList<User>();
+        //Current user
+        Optional<User> userOptional = userProvider.findUserByName(context.getSession().get("username"));
+        User currentUser = userOptional.get();
+        userList.add(currentUser);
+        Hand currentUserHand = pokerInstance.dealHand(deck);
+        handList.add(currentUserHand);
+        GameUser gameUser = new GameUser();
+        gameUser.setGame(game);
+        gameUser.setUser(currentUser);
+        gameUser.setHand(currentUserHand.toString());
+        gameUserList.add(gameUser);
+        //all other users
+        for(int i = 1; i < 6; i++)
+        {
+            Hand hand = pokerInstance.dealHand(deck);
             handList.add(hand);
-            GameUser gameUser = new GameUser();
+            gameUser = new GameUser();
             gameUser.setGame(game);
+            userOptional = userProvider.findUserByName(context.getParameter("u" + i));
+            User user = userOptional.get();
+            userList.add(user);
             gameUser.setUser(user);
             gameUser.setHand(hand.toString());
-            gameUserProvider.persist(gameUser);
-            result.render("c1u"+i, folder + hand.getCards().get(0).toString() + ".png");
-            result.render("c2u"+i, folder + hand.getCards().get(1).toString() + ".png");
-            result.render("c3u"+i, folder + hand.getCards().get(2).toString() + ".png");
-            result.render("c4u"+i, folder + hand.getCards().get(3).toString() + ".png");
-            result.render("c5u"+i, folder + hand.getCards().get(4).toString() + ".png");
-
-            result.render("type"+i, hand.getHandType().toString());
-
         }
-        result.render("winner", HandEvaluator.findWinner(handList).toString());
+        int winningPosition = HandEvaluator.findWinnerPosition(handList);
+        User winner = userList.get(winningPosition);
+        game.setWinner(winner);
+        result.render("winner", winner.getName());
+        //Persist everything!
+        gameProvider.persist(game);
+        for(GameUser gu: gameUserList)
+        {
+            gameUserProvider.persist(gu);
+        }
+        //render everything
         return result;
-        //return Results.html();
+
     }
 
     public Result index() {
