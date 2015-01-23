@@ -1,6 +1,6 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
 <@layout.myLayout "Home page">
-    <h1>New Game</h1>
+    <div id="mainDiv">
     <h2>Welcome ${username}. Please select 5 other players to play with.</h2>
     <br>
     <form class="input_full" action="/game" method="post">
@@ -61,6 +61,9 @@
                 </#list>
                 </#>
         </select>
+        <br>
         <input class="form-control" type="submit" value="Send" />
+        <br>
     </form>
+        </div>
 </@layout.myLayout>

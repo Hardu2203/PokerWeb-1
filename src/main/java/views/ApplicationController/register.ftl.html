@@ -1,5 +1,6 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
-<@layout.myLayout "Home page">    
+<@layout.myLayout "Home page">
+    <div id="mainDiv">
     <h1>Register Page</h1>
     <br>
     <form action="/registerNewUser" class="input_full" method="post">
@@ -20,7 +21,7 @@
         <input class="form-control" type="reset" value="Reset">
     </div>
     </form>
-
+</div>
 </@layout.myLayout>
 
 
