@@ -1,0 +1,18 @@
+<#import "../layout/defaultLayout.ftl.html" as layout> 
+<@layout.myLayout "Home page">
+    <div id="mainDiv">
+        <br>
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-default" href="cpu">Play against CPU</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-default" href="hostgame">Host Multiplayer game</a>
+        <br>
+        <br>
+        <br>
+    </div>
+</@layout.myLayout>
+<script>
+    $( document ).ready(function()
+    {
+        $("#chosetype").addClass("active");
+    });
+</script>

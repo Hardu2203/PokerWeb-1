@@ -59,9 +59,14 @@ public class ApplicationController {
     @Inject
     private GameProvider gameProvider;
 
+    @FilterWith(SecureFilter.class)
+    public Result choseType(Context context)
+    {
+        return Results.html();
+    }
 
     @FilterWith(SecureFilter.class)
-    public Result newGame(Context context)
+    public Result cpu(Context context)
     {
         Result result = Results.html();
         List<User> users = userProvider.findAllUsersExceptFor(context.getSession().get("username"));
@@ -172,7 +177,7 @@ public class ApplicationController {
         }
 
         context.getSession().put("username",context.getParameter("username"));
-        return Results.redirect("/newgame");
+        return Results.redirect("/chosetype");
     }
 
     public Result registerNewUser(Context context) {
