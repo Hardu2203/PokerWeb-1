@@ -25,6 +25,7 @@ import modal.java.cards.Hand;
 import modal.java.evaluators.HandEvaluator;
 import modal.java.game.Game;
 import modal.java.game.GameUser;
+import modal.java.game.MultiplayerGameList;
 import modal.java.providers.GameProvider;
 import modal.java.providers.GameUserProvider;
 import modal.java.users.User;
@@ -58,6 +59,32 @@ public class ApplicationController {
 
     @Inject
     private GameProvider gameProvider;
+
+    @Inject
+    private MultiplayerGameList multiplayerGames;
+
+    @FilterWith(SecureFilter.class)
+    public Result host(Context context)
+    {
+        Game game = new Game();
+        game.setGame_name(context.getParameter("gamename"));
+        multiplayerGames.getGames().add(game);
+        Optional<User> userOptional = userProvider.findUserByName(context.getSession().get("username"));
+        User user = userOptional.get();
+        multiplayerGames.getHosts().add(user);
+        return Results.redirect("lobby");
+    }
+
+
+    @FilterWith(SecureFilter.class)
+    public Result lobby()
+    {
+        Result result = Results.html();
+        result.render("multiplayerGames",multiplayerGames.getGames());
+        result.render("hosts",multiplayerGames.getHosts());
+        return result;
+    }
+
 
     @FilterWith(SecureFilter.class)
     public Result choseType(Context context)

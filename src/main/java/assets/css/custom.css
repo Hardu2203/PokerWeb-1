@@ -27,6 +27,7 @@ table
 {
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     color:white;
+    with:100%;
 }
 
 p
@@ -42,9 +43,8 @@ form
     margin-left: auto ;
     margin-right: auto ;
 }
-#mainDiv
+.mainDiv
 {
-    background-color: rgba(50,50,50,0.5);
     background-color: rgba(50,50,50,0.5);
     border: 2px solid;
     border-radius: 25px;

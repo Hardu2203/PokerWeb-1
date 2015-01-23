@@ -1,0 +1,68 @@
+<#import "../layout/defaultLayout.ftl.html" as layout>
+    <style>
+#headingdiv
+        {
+        background-color: rgba(50,50,50,0.65);
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        }
+    </style>
+<@layout.myLayout "Home page">
+    <div class="mainDiv">
+       <h1>Host Game</h1>
+        <form class="input_full" action="host" method="post">
+        Game Name:<br>
+        <input class="form-control" type="text" id="gamename" name="gamename">
+        <br>
+        <input class="form-control" type="submit" value="Send" />
+        </form>
+        <br>
+
+    </div>
+    <#assign x = 0>
+    <#list multiplayerGames as game>
+        <br>
+    <div class="mainDiv">
+        <div id="headingDiv">
+        <br>
+        <table id="headerinfo" >
+            <tbody>
+            <tr>
+                <td><strong>&nbsp;&nbsp;&nbsp;Game Name:</strong>${game.game_name}</td>
+                <td><strong>&nbsp;&nbsp;&nbsp;Host:</strong>${hosts[x].name}</td>
+                <td> <a class="btn btn-default" href="joingame">Join Game</a> </td>
+                <#assign x = x + 1>
+            </tr>
+            </tbody>
+        </table>
+        <hr>
+            </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Player</th>
+                <th>Join Time</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        Name of joined Player
+                    </td>
+                    <td>
+                       Time of join
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </#list>
+    <br>
+
+</@layout.myLayout>
+<script>
+    $( document ).ready(function()
+    {
+        $("#chosetype").addClass("active");
+    });
+</script>
