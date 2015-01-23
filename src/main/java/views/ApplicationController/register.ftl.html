@@ -1,7 +1,6 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
 <@layout.myLayout "Home page">
     <div id="mainDiv">
-    <h1>Register Page</h1>
     <br>
     <form action="/registerNewUser" class="input_full" method="post">
         <div class="form-group">
@@ -10,15 +9,14 @@
         <br>
         Password:<br>
         <input class="form-control"  class="input_full" type="password" id="password" name="password">
+            <br>
             <div class="progress">
                 <div class="progress-bar" role="progressbar" aria-valuenow="70"
                      aria-valuemin="0" aria-valuemax="100" id="progress" style="width:0">
                     <span class="sr-only"></span>
                 </div>
             </div>
-        <br>
         <input class="form-control" id="submit" type="submit" disabled="disabled" value="Send" />
-        <input class="form-control" type="reset" value="Reset">
     </div>
     </form>
 </div>
