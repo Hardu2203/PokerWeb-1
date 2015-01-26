@@ -28,6 +28,9 @@
     {
         $.get("/lobbyUpdate",function(data,status){
              $("#content").html(data);
+             //alert(data);
+             if(data=='"redirect":"true"')
+                window.location.href = "/history";
              update();
         });
 

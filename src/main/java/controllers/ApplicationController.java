@@ -69,9 +69,11 @@ public class ApplicationController {
 
     public  Result lobbyUpdate(Context context)
     {
+        String gamenumber = context.getSession().get("joinedGame");
+        int gameNumber = Integer.parseInt(gamenumber);
         Long lastUpdateTime = lastUpdateDate;
         int counter = 0;
-        while(lastUpdateDate == lastUpdateTime && counter < 100)
+        while(lastUpdateDate == lastUpdateTime && counter < 1000)
         {
             try {
                 counter++;
@@ -80,7 +82,27 @@ public class ApplicationController {
                 e.printStackTrace();
             }
         }
-
+        System.out.println("My name:" + context.getSession().get("username"));
+        if(gameNumber != -1) {
+            if(multiplayerGames.getGames().size() != 0) {
+                for (User tempUser : multiplayerGames.getJoinedUsers().get(gameNumber)) {
+                    System.out.println("other names:" + tempUser.getName());
+                    if (tempUser.getName().equals(context.getSession().get("username"))) {
+                        Result result = Results.html();
+                        result.render("multiplayerGames", multiplayerGames.getGames());
+                        result.render("hosts", multiplayerGames.getHosts());
+                        result.render("joinedUsers", multiplayerGames.getJoinedUsers());
+                        result.render("joinedDates", multiplayerGames.getJoinedDates());
+                        result.render("username", context.getSession().get("username"));
+                        return result;
+                    }
+                }
+                context.getSession().put("joinedGame",""+-1);
+                return Results.json().render("{\"redirect\":\"" + true + "\"}");
+            }
+            context.getSession().put("joinedGame",""+-1);
+            return Results.json().render("{\"redirect\":\"" + true + "\"}");
+        }
         Result result = Results.html();
         result.render("multiplayerGames",multiplayerGames.getGames());
         result.render("hosts",multiplayerGames.getHosts());
@@ -91,7 +113,7 @@ public class ApplicationController {
     }
 
     @FilterWith(SecureFilter.class)
-    public Result multiplayergame(Context context, @PathParam("gamenumber") String gamenumber)
+    public synchronized Result multiplayergame(Context context, @PathParam("gamenumber") String gamenumber)
     {
         int gameNumber = Integer.parseInt(gamenumber);
         Result result = Results.html();
@@ -147,6 +169,7 @@ public class ApplicationController {
         result.render("userlist",userList);
         result.render("handlist",handList);
         result.render("winninghand",handList.get(winningPosition));
+        lastUpdateDate = (new Date()).getTime();
         return result;
     }
 
@@ -162,7 +185,9 @@ public class ApplicationController {
         LinkedList<Date> joinedDate = multiplayerGames.getJoinedDates().get(gameNumber);
         joinedDate.add(new Date());
         lastUpdateDate = (new Date()).getTime();
-        return Results.redirect(router.getReverseRoute(ApplicationController.class, "lobby"));
+        context.getSession().put("joinedGame",gamenumber);
+        Result result = Results.redirect(router.getReverseRoute(ApplicationController.class, "lobby"));
+        return result;
     }
 
     @FilterWith(SecureFilter.class)
@@ -177,6 +202,7 @@ public class ApplicationController {
         User user = userOptional.get();
         multiplayerGames.getHosts().add(user);
         lastUpdateDate = (new Date()).getTime();
+        //context.getSession().put("gamenumber",""+multiplayerGames.getGames().size());
         return Results.redirect("lobby");
     }
 
@@ -312,6 +338,7 @@ public class ApplicationController {
         }
 
         context.getSession().put("username",context.getParameter("username"));
+        context.getSession().put("joinedGame","-1");
         return Results.redirect("/chosetype");
     }
 
