@@ -5,6 +5,7 @@ import modal.java.users.User;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,9 +24,32 @@ public class Game {
     @JoinColumn(name = "winner_name")
     private User winner_name;
 
+    @ManyToOne
+    @JoinColumn(name = "host_name")
+    private User host_name;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    private List<GameUser> gameUsers;
+
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date date_time;
+
+    public User getHost_name() {
+        return host_name;
+    }
+
+    public void setHost_name(User host_name) {
+        this.host_name = host_name;
+    }
+
+    public void setGameUsers(List<GameUser> gameUsers) {
+        this.gameUsers = gameUsers;
+    }
+
+    public List<GameUser> getGameUsers() {
+        return gameUsers;
+    }
 
     public void setDate_time(Date date_time) {
         this.date_time = date_time;

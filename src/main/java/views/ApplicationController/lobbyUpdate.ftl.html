@@ -1,49 +1,39 @@
 <#if multiplayerGames??>
-    <#assign x = 0>
-    <#assign y = 0>
-        <#list multiplayerGames as game>
-            <br>
-            <div class="mainDiv">
-                <div id="headingDiv">
-                    <br>
-                    <table id="headerinfo" >
-                        <tbody>
-                        <tr>
-                            <td><strong>&nbsp;&nbsp;&nbsp;Game Name:</strong>${game.game_name}</td>
-                            <td><strong>&nbsp;&nbsp;&nbsp;Host:</strong>${hosts[x].name}</td>
-                            <td> <a class="btn btn-default" href="joingame/${x}">Join Game</a> </td>
-                            <#if username=hosts[x].name && (joinedUsers[x]?size > 0) ><td> <a class="btn btn-default" href="multiplayergame/${x}">Start Game!</a> </td></#if>
-                            <#assign x = x + 1>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <hr>
-                </div>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Player</th>
-                        <th>Join Time</th>
-                    </tr>
-                    </thead>
+    <#list multiplayerGames as game>
+        <br>
+        <div class="mainDiv">
+            <div id="headingDiv">
+                <br>
+                <table id="headerinfo" >
                     <tbody>
-                    <#assign z = 0>
-                        <#list joinedUsers[y] as joinedUser>
-                            <tr>
-                                <td>
-                                    ${joinedUser.name}
-                                </td>
-                                <td>
-                                    ${joinedDates[y][z]?datetime}
-                                </td>
-                            </tr>
-                            <#assign z = z + 1>
-                        </#list>
+                    <tr>
+                        <td><strong>&nbsp;&nbsp;&nbsp;Game Name:</strong>${game.game_name}</td>
+                        <td><strong>&nbsp;&nbsp;&nbsp;Host:</strong>${game.host_name.name}</td>
+                        <td> <a class="btn btn-default" href="joingame/${game.id}">Join Game</a> </td>
+                        <#if username=game.host_name.name && (game.gameUsers?size > 0) ><td> <a class="btn btn-default" href="multiplayergame/${game.id}">Start Game!</a> </td></#if>
+                    </tr>
                     </tbody>
                 </table>
-                <#assign y = y + 1>
+                <hr>
             </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Player</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <#list game.gameUsers as joinedUser>
+                        <tr>
+                            <td>
+                                ${joinedUser.name}
+                            </td>
+                        </tr>
+                    </#list>
+                </tbody>
+            </table>
+        </div>
 
-        </#list>
-        <br>
+    </#list>
+    <br>
 </#if>

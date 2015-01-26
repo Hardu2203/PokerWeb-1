@@ -26,6 +26,11 @@ public class DatabaseProvider<T> {
         entityManagerProvider.get().persist(entity);
     }
 
+    @Transactional
+    public void Merge(T entity)
+    {
+        entityManagerProvider.get().merge(entity);
+    }
     protected EntityManager getEntityManager()
     {
         return entityManagerProvider.get();
