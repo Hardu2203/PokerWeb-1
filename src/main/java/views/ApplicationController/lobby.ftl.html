@@ -19,50 +19,23 @@
         <br>
 
     </div>
-    <#assign x = 0>
-    <#list multiplayerGames as game>
-        <br>
-    <div class="mainDiv">
-        <div id="headingDiv">
-        <br>
-        <table id="headerinfo" >
-            <tbody>
-            <tr>
-                <td><strong>&nbsp;&nbsp;&nbsp;Game Name:</strong>${game.game_name}</td>
-                <td><strong>&nbsp;&nbsp;&nbsp;Host:</strong>${hosts[x].name}</td>
-                <td> <a class="btn btn-default" href="joingame">Join Game</a> </td>
-                <#assign x = x + 1>
-            </tr>
-            </tbody>
-        </table>
-        <hr>
-            </div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Player</th>
-                <th>Join Time</th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        Name of joined Player
-                    </td>
-                    <td>
-                       Time of join
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    </#list>
-    <br>
+    <div id="content">
 
+    </div>
 </@layout.myLayout>
 <script>
+    function update()
+    {
+        $.get("/lobbyUpdate",function(data,status){
+             $("#content").html(data);
+             update();
+        });
+
+    }
     $( document ).ready(function()
     {
         $("#chosetype").addClass("active");
+        update();
+
     });
 </script>

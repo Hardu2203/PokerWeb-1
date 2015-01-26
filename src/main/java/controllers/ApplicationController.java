@@ -30,16 +30,15 @@ import modal.java.providers.GameProvider;
 import modal.java.providers.GameUserProvider;
 import modal.java.users.User;
 import modal.java.providers.UserProvider;
-import ninja.Context;
-import ninja.FilterWith;
-import ninja.Result;
-import ninja.Results;
+import ninja.*;
 
 import com.google.inject.Singleton;
+import ninja.params.PathParam;
 import org.eclipse.jetty.server.handler.HandlerList;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.sql.ResultSet;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,25 +62,128 @@ public class ApplicationController {
     @Inject
     private MultiplayerGameList multiplayerGames;
 
+    @Inject
+    private Router router;
+
+    private volatile Long lastUpdateDate;
+
+    public  Result lobbyUpdate(Context context)
+    {
+        Long lastUpdateTime = lastUpdateDate;
+        int counter = 0;
+        while(lastUpdateDate == lastUpdateTime && counter < 100)
+        {
+            try {
+                counter++;
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Result result = Results.html();
+        result.render("multiplayerGames",multiplayerGames.getGames());
+        result.render("hosts",multiplayerGames.getHosts());
+        result.render("joinedUsers",multiplayerGames.getJoinedUsers());
+        result.render("joinedDates",multiplayerGames.getJoinedDates());
+        result.render("username", context.getSession().get("username"));
+        return result;
+    }
+
     @FilterWith(SecureFilter.class)
-    public Result host(Context context)
+    public Result multiplayergame(Context context, @PathParam("gamenumber") String gamenumber)
+    {
+        int gameNumber = Integer.parseInt(gamenumber);
+        Result result = Results.html();
+        result.render("username", context.getSession().get("username"));
+        String folder = "/assets/images/cards/";
+        result.render("folder",folder);
+        Deck deck = new Deck();
+        Game game = multiplayerGames.getGames().remove(gameNumber);
+        game.setDate_time(new Date());
+        List<Hand> handList = new LinkedList<Hand>();
+        List<GameUser> gameUserList = new LinkedList<GameUser>();
+        List<User> userList = new LinkedList<User>();
+        //Current user
+        User currentUser = multiplayerGames.getHosts().remove(gameNumber);
+
+        userList.add(currentUser);
+        Hand currentUserHand = pokerInstance.dealHand(deck);
+        handList.add(currentUserHand);
+        GameUser gameUser = new GameUser();
+        gameUser.setGame(game);
+        gameUser.setUser(currentUser);
+        gameUser.setHand(currentUserHand.toString());
+        gameUser.setType(currentUserHand.getHandType().toString());
+        gameUserList.add(gameUser);
+        //all other users
+        LinkedList<User> users = multiplayerGames.getJoinedUsers().remove(gameNumber);
+        for(User user : users)
+        {
+            Hand hand = pokerInstance.dealHand(deck);
+            handList.add(hand);
+            gameUser = new GameUser();
+            gameUser.setGame(game);
+            userList.add(user);
+            gameUser.setUser(user);
+            gameUser.setHand(hand.toString());
+            gameUser.setType(hand.getHandType().toString());
+            gameUserList.add(gameUser);
+        }
+        int winningPosition = HandEvaluator.findWinnerPosition(handList);
+        User winner = userList.get(winningPosition);
+        game.setWinner(winner);
+        result.render("winner", winner.getName());
+        gameUserList.get(winningPosition).setWinner(true);
+        //Persist everything!
+        gameProvider.persist(game);
+        for(GameUser gu: gameUserList)
+        {
+            gameUserProvider.persist(gu);
+        }
+        //remove times from list
+        multiplayerGames.getJoinedDates().remove(gameNumber);
+        //render everything
+        result.render("userlist",userList);
+        result.render("handlist",handList);
+        result.render("winninghand",handList.get(winningPosition));
+        return result;
+    }
+
+    @FilterWith(SecureFilter.class)
+    public Result join(Context context, @PathParam("gamenumber") String gamenumber)
+    {
+        int gameNumber = Integer.parseInt(gamenumber);
+        //Game game = multiplayerGames.getGames().get(Integer.parseInt(gamenumber));
+        LinkedList<User> joinedUsers = multiplayerGames.getJoinedUsers().get(gameNumber);
+        Optional<User> userOptional = userProvider.findUserByName(context.getSession().get("username"));
+        User user = userOptional.get();
+        joinedUsers.add(user);
+        LinkedList<Date> joinedDate = multiplayerGames.getJoinedDates().get(gameNumber);
+        joinedDate.add(new Date());
+        return Results.redirect(router.getReverseRoute(ApplicationController.class, "lobby"));
+    }
+
+    @FilterWith(SecureFilter.class)
+    public synchronized Result host(Context context)
     {
         Game game = new Game();
         game.setGame_name(context.getParameter("gamename"));
         multiplayerGames.getGames().add(game);
+        multiplayerGames.getJoinedDates().add(new LinkedList<Date>());
+        multiplayerGames.getJoinedUsers().add(new LinkedList<User>());
         Optional<User> userOptional = userProvider.findUserByName(context.getSession().get("username"));
         User user = userOptional.get();
         multiplayerGames.getHosts().add(user);
+        lastUpdateDate = (new Date()).getTime();
         return Results.redirect("lobby");
     }
 
 
     @FilterWith(SecureFilter.class)
-    public Result lobby()
+    public Result lobby(Context context)
     {
         Result result = Results.html();
-        result.render("multiplayerGames",multiplayerGames.getGames());
-        result.render("hosts",multiplayerGames.getHosts());
         return result;
     }
 

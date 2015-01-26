@@ -1,0 +1,85 @@
+<#import "../layout/defaultLayout.ftl.html" as layout> 
+<@layout.myLayout "Home page">
+<style>
+body
+{
+    background-image: url('/assets/images/background2.jpg');
+    background-position: 0px 50px;
+}
+    #mainDiv
+    {
+        margin:auto;
+        width:75%;
+    }
+    img
+    {
+        opacity:0;
+        width:80px;
+    }
+    .type
+    {
+       visibility: hidden;
+    }
+</style>
+
+<div class="mainDiv">
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Player</th>
+            <th>Cards</th>
+            <th>Type</th>
+            <th>Winner</th>
+        </tr>
+        </thead>
+        <tbody>
+        <#assign u = 0>
+        <#list handlist as hand>
+            <tr>
+                <td>
+
+                    <p>${userlist[u].name}</p>
+                    <#assign u = u + 1>
+                </td>
+                <td>
+                    <#assign x = 1>
+
+                        <#list hand.cards as card>
+                            <img class="c${x}"  src="${folder}${card}.png" width="100px">
+                            <#assign x = x + 1>
+                        </#list>
+                        <td>
+                        <p class="type" >${hand.handType}</p>
+                        </td>
+                        <td>
+                            <#if hand = winninghand><img class="resultImage"  src="/assets/images/pokercoins.png" width="200px">
+                            <#else><img class="resultImage"  src="/assets/images/sad_face.png" width="200px"></#if>
+                        </td>
+
+                </td>
+            </tr>
+        </#list>
+
+        </tbody>
+    </table>
+</div>
+</@layout.myLayout>
+
+<script>
+        $( document ).ready(function()
+        {
+            $(".c1").animate({ opacity: 1 },1000).promise().done(function(){
+                $(".c2").animate({ opacity: 1 },1000).promise().done(function(){
+                    $(".c3").animate({ opacity: 1 },1000).promise().done(function(){
+                        $(".c4").animate({ opacity: 1 },1000).promise().done(function(){
+                            $(".c5").animate({ opacity: 1 },1000).promise().done(function(){
+                                $(".type").css("visibility","visible");
+                                $(".resultImage").css("opacity","1");
+                            });
+                        });
+                    });
+                });
+             });
+        });
+</script>
