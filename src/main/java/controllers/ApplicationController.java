@@ -151,7 +151,7 @@ public class ApplicationController {
     }
 
     @FilterWith(SecureFilter.class)
-    public Result join(Context context, @PathParam("gamenumber") String gamenumber)
+    public synchronized Result join(Context context, @PathParam("gamenumber") String gamenumber)
     {
         int gameNumber = Integer.parseInt(gamenumber);
         //Game game = multiplayerGames.getGames().get(Integer.parseInt(gamenumber));
@@ -161,6 +161,7 @@ public class ApplicationController {
         joinedUsers.add(user);
         LinkedList<Date> joinedDate = multiplayerGames.getJoinedDates().get(gameNumber);
         joinedDate.add(new Date());
+        lastUpdateDate = (new Date()).getTime();
         return Results.redirect(router.getReverseRoute(ApplicationController.class, "lobby"));
     }
 
@@ -184,6 +185,11 @@ public class ApplicationController {
     public Result lobby(Context context)
     {
         Result result = Results.html();
+        result.render("multiplayerGames",multiplayerGames.getGames());
+        result.render("hosts",multiplayerGames.getHosts());
+        result.render("joinedUsers",multiplayerGames.getJoinedUsers());
+        result.render("joinedDates",multiplayerGames.getJoinedDates());
+        result.render("username", context.getSession().get("username"));
         return result;
     }
 
