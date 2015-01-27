@@ -9,7 +9,7 @@
                     <tr>
                         <td><strong>&nbsp;&nbsp;&nbsp;Game Name:</strong>${game.game_name}</td>
                         <td><strong>&nbsp;&nbsp;&nbsp;Host:</strong>${game.host_name.name}</td>
-                        <td> <a class="btn btn-default" href="joingame/${game.id}">Join Game</a> </td>
+                        <#if !(username=game.host_name.name)><td> <a class="btn btn-default" href="joingame/${game.id}">Join Game</a> </td></#if>
                         <#if username=game.host_name.name && (game.gameUsers?size > 0) ><td> <a class="btn btn-default" href="multiplayergame/${game.id}">Start Game!</a> </td></#if>
                     </tr>
                     </tbody>

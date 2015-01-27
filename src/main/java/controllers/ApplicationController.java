@@ -67,7 +67,7 @@ public class ApplicationController {
     {
         Long lastUpdateTime = lastUpdateDate;
         int counter = 0;
-        while(lastUpdateDate == lastUpdateTime && counter < 1000)
+        while(lastUpdateDate == lastUpdateTime && counter < 10000)
         {
             try {
                 counter++;
