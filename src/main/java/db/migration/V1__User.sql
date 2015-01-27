@@ -12,6 +12,7 @@ CREATE TABLE game(
     date_time TIMESTAMP,
     winner_name VARCHAR(12),
     host_name VARCHAR(12),
+    played BOOLEAN NOT NULL,
     CONSTRAINT winner_name_fk FOREIGN KEY(winner_name) REFERENCES user(name),
     CONSTRAINT host_name_fk FOREIGN KEY(host_name) REFERENCES user(name),
     PRIMARY KEY(id)

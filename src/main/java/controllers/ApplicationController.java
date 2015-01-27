@@ -111,6 +111,7 @@ public class ApplicationController {
         result.render("winner", winner.getName());
 
         //Persist everything!
+        game.setPlayed(true);
         gameProvider.Merge(game);
         for(GameUser gu: gameUsers)
         {

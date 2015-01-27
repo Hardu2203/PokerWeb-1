@@ -28,12 +28,24 @@ public class Game {
     @JoinColumn(name = "host_name")
     private User host_name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "game")
     private List<GameUser> gameUsers;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date date_time;
+
+    @Column
+    private boolean played = false;
+
+    public void setPlayed(boolean played) {
+        this.played = played;
+    }
+
+    public boolean getPlayed()
+    {
+        return played;
+    }
 
     public User getHost_name() {
         return host_name;

@@ -28,15 +28,8 @@ public class GameProvider extends DatabaseProvider<Game> {
     @UnitOfWork
     public List<Game> findAllUnfinishedGames()
     {
-        Query query = getEntityManager().createQuery("SELECT g FROM Game g");
+        Query query = getEntityManager().createQuery("SELECT g FROM Game g WHERE g.played = :false").setParameter("false",false);
         List<Game> games = query.getResultList();
-        List<Game> result = new LinkedList<Game>();
-        for(int i = 0; i  < games.size();i++)
-        {
-            Game game = games.get(i);
-            if(game. getGameUsers().size() == 0)
-                result.add(game);
-        }
-        return result;
+        return games;
     }
 }
