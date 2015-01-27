@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Table
 public class Game {
+
     @Column
     private String game_name;
     @GeneratedValue()
@@ -28,7 +29,7 @@ public class Game {
     @JoinColumn(name = "host_name")
     private User host_name;
 
-    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "game")
+    @OneToMany(fetch=FetchType.EAGER, mappedBy = "game")
     private List<GameUser> gameUsers;
 
     @Column

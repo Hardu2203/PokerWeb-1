@@ -93,9 +93,15 @@ public class ApplicationController {
 
         Game game = (Game)gameProvider.findGameByID(gameNumber).get();
         game.setDate_time(new Date());
-        List<GameUser> gameUsers = gameUserProvider.findByGame(game);
+        List<GameUser> gameUsers = game.getGameUsers();
         List<Hand> hands = new LinkedList<Hand>();
-
+        GameUser host = new GameUser();
+        host.setGame(game);
+        Optional<User> userOptional = userProvider.findUserByName(context.getSession().get("username"));
+        User user = userOptional.get();
+        host.setUser(user);
+        gameUserProvider.persist(host);
+        gameUsers.add(host);
         for(GameUser gameUser: gameUsers)
         {
             Hand hand = pokerInstance.dealHand(deck);
@@ -107,20 +113,19 @@ public class ApplicationController {
         int winningPosition = HandEvaluator.findWinnerPosition(hands);
         gameUsers.get(winningPosition).setWinner(true);
         User winner = gameUsers.get(winningPosition).getUser();
-        game.setWinner(winner);
-        result.render("winner", winner.getName());
 
-        //Persist everything!
+        game.setWinner(winner);
         game.setPlayed(true);
         gameProvider.Merge(game);
+
         for(GameUser gu: gameUsers)
         {
             gameUserProvider.Merge(gu);
         }
-        //remove times from list
+
 
         result.render("gameUsers",gameUsers);
-
+        result.render("winner", winner.getName());
         lastUpdateDate = (new Date()).getTime();
         return result;
     }
@@ -149,11 +154,8 @@ public class ApplicationController {
         Optional<User> userOptional = userProvider.findUserByName(context.getSession().get("username"));
         User user = userOptional.get();
         game.setHost_name(user);
-        ///////////////
         gameProvider.persist(game);
-        ///////////
         lastUpdateDate = (new Date()).getTime();
-        //context.getSession().put("gamenumber",""+multiplayerGames.getGames().size());
         return Results.redirect("lobby");
     }
 
